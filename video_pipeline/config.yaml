@@ -1,0 +1,63 @@
+# Video Pipeline Configuration
+
+# Model settings
+model:
+  sconet_path: "../scoliosis_app/experiments/sconet_best.pth"
+  sconet_mt_path: "../scoliosis_app/experiments/sconet_mt_best.pth"
+  use_ensemble: false  # Use both models for prediction
+  device: "cuda"  # cuda or cpu
+  
+# Video processing settings
+video:
+  target_fps: 15  # Target frame rate for processing
+  min_duration: 5  # Minimum video duration in seconds
+  max_duration: 60  # Maximum video duration in seconds
+  
+# Person detection settings
+detection:
+  model: "yolov8m.pt"  # YOLOv8 model variant
+  confidence_threshold: 0.5
+  nms_threshold: 0.4
+  
+# Tracking settings
+tracking:
+  max_distance: 50  # Maximum distance for track association
+  min_confidence: 0.3
+  track_buffer: 30  # Number of frames to keep lost tracks
+  
+# Segmentation settings
+segmentation:
+  backend: "mediapipe"  # mediapipe, sam, or mobilenet
+  model_selection: 1  # 0: general, 1: landscape (for mediapipe)
+  confidence_threshold: 0.7
+  
+# Silhouette generation
+silhouette:
+  output_size: [64, 64]  # Target silhouette size
+  sequence_length: 300  # Number of frames in sequence
+  sampling_strategy: "uniform"  # uniform, random, or adaptive
+  normalize: true
+  binary_threshold: 128  # Threshold for binary silhouette
+  
+# Walking detection
+walking_detection:
+  enabled: true
+  min_motion_threshold: 5.0  # Minimum optical flow magnitude
+  min_walking_frames: 30  # Minimum frames of walking motion
+  
+# Quality checks
+quality:
+  min_resolution: [480, 640]  # Minimum [height, width]
+  max_blur_score: 100.0  # Maximum acceptable blur
+  min_person_size_ratio: 0.2  # Person should be at least 20% of frame
+  
+# Output settings
+output:
+  save_intermediate: false  # Save intermediate processing results
+  visualization: true  # Generate visualization outputs
+  output_dir: "./output"
+  
+# Logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  log_file: "./pipeline.log"

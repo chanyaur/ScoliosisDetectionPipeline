@@ -1,0 +1,29 @@
+============================================================
+SCOLIOSIS1K DATASET - EXPLORATORY DATA ANALYSIS REPORT
+============================================================
+
+1. DATASET OVERVIEW
+----------------------------------------
+Total sequences: 1493
+Total subjects: 1493
+
+2. CLASS DISTRIBUTION
+----------------------------------------
+Positive  :  493 sequences (33.0%)
+Neutral   :  200 sequences (13.4%)
+Negative  :  800 sequences (53.6%)
+
+Imbalance ratio: 4.00:1
+
+3. FILE STATISTICS
+----------------------------------------
+Average file size: 1200.16 KB
+Min file size: 1200.16 KB
+Max file size: 1200.16 KB
+Total dataset size: 1749.84 MB
+
+4. SUBJECTS PER CLASS
+----------------------------------------
+Positive  : 493 subjects
+Neutral   : 200 subjects
+Negative  : 800 subjects

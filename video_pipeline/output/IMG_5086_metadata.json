@@ -1,0 +1,16 @@
+{
+  "video_metadata": {
+    "fps": 30.051260145237077,
+    "frame_count": 469,
+    "width": 720,
+    "height": 1280,
+    "duration": 15.606666666666667
+  },
+  "num_frames_processed": 235,
+  "num_valid_detections": 235,
+  "sequence_shape": [
+    300,
+    64,
+    64
+  ]
+}

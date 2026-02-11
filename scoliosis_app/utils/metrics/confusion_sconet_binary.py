@@ -1,0 +1,23 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+import numpy as np
+
+cm = np.array([    [
+      70,
+      5
+    ],
+    [
+      13,
+      107
+    ]
+])
+
+plt.figure(figsize=(6,5))
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues",
+            xticklabels=['Positive', 'Negative'],
+            yticklabels=['Positive', 'Negative'])
+plt.xlabel("Predicted label")
+plt.ylabel("True label")
+plt.title("Confusion Matrix – ScoNet-Binary (Test Set)")
+plt.tight_layout()
+plt.show()
