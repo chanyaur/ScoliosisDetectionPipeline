@@ -1,0 +1,40 @@
+{
+  "test_auc": 0.8652771672771674,
+  "test_accuracy": 0.6888888888888889,
+  "test_sensitivity": 0.38666666666666666,
+  "test_loss": 0.6163304014170232,
+  "confusion_matrix": [
+    [
+      29,
+      12,
+      34
+    ],
+    [
+      0,
+      16,
+      14
+    ],
+    [
+      2,
+      8,
+      110
+    ]
+  ],
+  "best_epoch": 9,
+  "config": {
+    "model_type": "mt",
+    "num_classes": 3,
+    "n_frames": 30,
+    "data_root": "./Scoliosis1K-pkl",
+    "batch_size": 16,
+    "num_workers": 0,
+    "epochs": 100,
+    "learning_rate": 0.0001,
+    "weight_decay": 1e-05,
+    "patience": 20,
+    "focal_gamma": 2.0,
+    "class_weight": 1.0,
+    "angle_weight": 0.5,
+    "output_dir": "scoliosis_app/experiments/sconet_20251109_085000"
+  }
+}

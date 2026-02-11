@@ -1,6 +1,6 @@
 import streamlit as st
-import tensorflow as tf
-import tensorflow_hub as hub
+# import tensorflow as tf
+# import tensorflow_hub as hub
 from PIL import Image
 import numpy as np
 

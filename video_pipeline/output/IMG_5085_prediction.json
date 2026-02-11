@@ -1,0 +1,10 @@
+{
+  "predicted_class": 2,
+  "predicted_label": "Negative (Healthy)",
+  "confidence": 0.77663654088974,
+  "probabilities": {
+    "Positive (Scoliosis)": 0.13656727969646454,
+    "Neutral (Borderline)": 0.08679620176553726,
+    "Negative (Healthy)": 0.77663654088974
+  }
+}
