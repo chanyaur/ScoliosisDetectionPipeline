@@ -1,24 +1,21 @@
-# Core dependencies
-opencv-python-headless>=4.8.0
-opencv-python==0.0.0
-
+# Core
 numpy==1.24.4
 torch==2.0.1
 torchvision==0.15.2
-Pillow>=10.0.0
+Pillow==10.2.0
 
-# YOLOv8 (CPU-safe)
-ultralytics>=8.2.0
+# YOLO (compatible with torch 2.0.1)
+ultralytics==8.0.196
+
+# OpenCV
+opencv-python-headless==4.8.1.78
+opencv-python==0.0.0
 
 # Utilities
-tqdm>=4.66.0
-pyyaml>=6.0
-click>=8.1.0
-
-# Optional but usually safe
-scikit-image>=0.21.0
-matplotlib>=3.7.0
-
-# For video reading (safe)
-imageio>=2.31.0
-imageio-ffmpeg>=0.4.9
+tqdm==4.66.1
+pyyaml==6.0.1
+click==8.1.7
+scikit-image==0.21.0
+matplotlib==3.7.3
+imageio==2.31.1
+imageio-ffmpeg==0.4.9
