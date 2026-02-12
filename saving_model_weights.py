@@ -1,6 +1,6 @@
 import torch
 
-checkpoint = torch.load("scoliosis_app/experiments/improved_ScoNet/checkpoints/latest.pth", map_location="cpu")
+checkpoint = torch.load("scoliosis_app/experiments/improved_ScoNet/checkpoints/latest.pth", map_location="cpu", weights_only=False)
 
 # If it's a dict checkpoint
 if "model_state_dict" in checkpoint:

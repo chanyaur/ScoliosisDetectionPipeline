@@ -137,7 +137,7 @@ def run_pipeline_on_video(video_bytes, model_type, _pipeline):
     # Run your pipeline once
     results = _pipeline.process_video("temp_video.mp4")
 
-    predictor = ScoliosisPredictor("scoliosis_app/experiments/improved_ScoNet/checkpoints/latest.pth")  # modify w model type
+    predictor = ScoliosisPredictor("scoliosis_app/experiments/improved_ScoNet/checkpoints/clean_weights_sconet.pth")  # modify w model type
     prediction = predictor.predict(results["silhouettes"])
 
     # unsure

@@ -42,6 +42,7 @@ class ModelLoader:
         Returns:
             Loaded model in eval mode
         """
+
         try:
             # Import ScoNet model
             from scoliosis_app.models.sconet import ScoNet
