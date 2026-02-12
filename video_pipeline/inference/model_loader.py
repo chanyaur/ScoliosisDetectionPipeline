@@ -50,7 +50,7 @@ class ModelLoader:
             model = ScoNet(num_classes=3, n_frames=30)
             
             # Load checkpoint
-            checkpoint = torch.load(checkpoint_path, map_location=self.device, weights_only=True)  # restore the trained ScoNet parameters w/out retraining
+            checkpoint = torch.load(checkpoint_path, map_location=self.device, weights_only=False)  # restore the trained ScoNet parameters w/out retraining
             # this was changed to false!! TAKE NOTE OF THIS
             
             # Handle different checkpoint formats
