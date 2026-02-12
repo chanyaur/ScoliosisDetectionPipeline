@@ -5,7 +5,7 @@ Human segmentation using MediaPipe and other methods
 import numpy as np
 import cv2
 from typing import Optional, Tuple, List
-import mediapipe as mp
+# import mediapipe as mp
 import logging
 
 logger = logging.getLogger(__name__)
@@ -17,7 +17,7 @@ class HumanSegmenter:  # segmenting = separate foreground (human) from bg
     """
     
     def __init__(self, 
-                 backend: str = "mediapipe",  # seems like      and bg subtraction are 2 ways of doing the same thing - segmenting
+                 backend: str = "background_subtraction",  # seems like      and bg subtraction are 2 ways of doing the same thing - segmenting
                  model_selection: int = 1,  # From MediaPipe selfie segmentation. 0 is for like selfies but 1 is for full body views
                  confidence_threshold: float = 0.7):  # the cutoff to turn the per-pixel probability map into binary segmentation mask. Higher --> may miss some foreground, lower --> may include some background
         """
@@ -31,15 +31,15 @@ class HumanSegmenter:  # segmenting = separate foreground (human) from bg
         self.backend = backend
         self.confidence_threshold = confidence_threshold
         
-        if backend == "mediapipe":
-            # Initialize MediaPipe selfie segmentation
-            self.mp_selfie = mp.solutions.selfie_segmentation  # the module from MediaPipe that allows the model to be created in the future
-            self.segmentor = self.mp_selfie.SelfieSegmentation(
-                model_selection=model_selection
-            )
-            logger.info(f"Initialized MediaPipe segmentation (model={model_selection})")
+        # if backend == "mediapipe":
+        #     # Initialize MediaPipe selfie segmentation
+        #     self.mp_selfie = mp.solutions.selfie_segmentation  # the module from MediaPipe that allows the model to be created in the future
+        #     self.segmentor = self.mp_selfie.SelfieSegmentation(
+        #         model_selection=model_selection
+        #     )
+        #     logger.info(f"Initialized MediaPipe segmentation (model={model_selection})")
             
-        elif backend == "background_subtraction":
+        if backend == "background_subtraction":
             # Initialize background subtractor
             self.bg_subtractor = cv2.createBackgroundSubtractorMOG2(
                 detectShadows=True  # why would we want to identify shadows?
@@ -62,57 +62,57 @@ class HumanSegmenter:  # segmenting = separate foreground (human) from bg
         Returns:
             Binary mask (H, W) with person pixels as 1
         """
-        if self.backend == "mediapipe":
-            return self._segment_mediapipe(frame, bbox)
-        elif self.backend == "background_subtraction":
+        # if self.backend == "mediapipe":
+        #     return self._segment_mediapipe(frame, bbox)
+        if self.backend == "background_subtraction":
             return self._segment_background_subtraction(frame, bbox)
         else:
             raise ValueError(f"Unknown backend: {self.backend}")
             
-    def _segment_mediapipe(self,  # mediapipe subtract method of segmentation
-                          frame: np.ndarray,  # np.ndarray is the type, representing a n-dimensional array
-                          bbox: Optional[List[int]] = None) -> np.ndarray:  # can not be provided when detector returns no boxes
-        """
-        Segment using MediaPipe
+    # def _segment_mediapipe(self,  # mediapipe subtract method of segmentation
+    #                       frame: np.ndarray,  # np.ndarray is the type, representing a n-dimensional array
+    #                       bbox: Optional[List[int]] = None) -> np.ndarray:  # can not be provided when detector returns no boxes
+    #     """
+    #     Segment using MediaPipe
         
-        Args:
-            frame: Input frame
-            bbox: Optional bounding box
+    #     Args:
+    #         frame: Input frame
+    #         bbox: Optional bounding box
             
-        Returns:
-            Binary mask
-        """
-        # If bbox provided, crop frame
-        if bbox:
-            x1, y1, x2, y2 = bbox
-            cropped_frame = frame[y1:y2, x1:x2]
+    #     Returns:
+    #         Binary mask
+    #     """
+    #     # If bbox provided, crop frame
+    #     if bbox:
+    #         x1, y1, x2, y2 = bbox
+    #         cropped_frame = frame[y1:y2, x1:x2]
             
-            # Process cropped region
-            results = self.segmentor.process(cropped_frame)  # this runs the pretrained model to segment the object
-                                                             # input: RGB image, output: float32 array representing the mask
+    #         # Process cropped region
+    #         results = self.segmentor.process(cropped_frame)  # this runs the pretrained model to segment the object
+    #                                                          # input: RGB image, output: float32 array representing the mask
             
-            if results.segmentation_mask is not None:
-                # Convert to binary mask
-                mask = results.segmentation_mask > self.confidence_threshold  # for each pixel, only take it if probability > confidence
+    #         if results.segmentation_mask is not None:
+    #             # Convert to binary mask
+    #             mask = results.segmentation_mask > self.confidence_threshold  # for each pixel, only take it if probability > confidence
                 
-                # Resize back to original frame size
-                full_mask = np.zeros((frame.shape[0], frame.shape[1]), dtype=bool)  # set an array of all 0s first
-                full_mask[y1:y2, x1:x2] = mask  # and then take the bounding box frame and then set these pixels to true or false, depending on the mask
+    #             # Resize back to original frame size
+    #             full_mask = np.zeros((frame.shape[0], frame.shape[1]), dtype=bool)  # set an array of all 0s first
+    #             full_mask[y1:y2, x1:x2] = mask  # and then take the bounding box frame and then set these pixels to true or false, depending on the mask
                 
-                return full_mask.astype(np.uint8)
-            else:
-                return np.zeros((frame.shape[0], frame.shape[1]), dtype=np.uint8)  # dtype - data type
-                                                                                   # uint8 can store 8-bit integers [0-255]
-        else:
-            # Process full frame
-            results = self.segmentor.process(frame)
+    #             return full_mask.astype(np.uint8)
+    #         else:
+    #             return np.zeros((frame.shape[0], frame.shape[1]), dtype=np.uint8)  # dtype - data type
+    #                                                                                # uint8 can store 8-bit integers [0-255]
+    #     else:
+    #         # Process full frame
+    #         results = self.segmentor.process(frame)
             
-            if results.segmentation_mask is not None:
-                # Convert to binary mask
-                mask = results.segmentation_mask > self.confidence_threshold
-                return mask.astype(np.uint8)
-            else:
-                return np.zeros((frame.shape[0], frame.shape[1]), dtype=np.uint8)
+    #         if results.segmentation_mask is not None:
+    #             # Convert to binary mask
+    #             mask = results.segmentation_mask > self.confidence_threshold
+    #             return mask.astype(np.uint8)
+    #         else:
+    #             return np.zeros((frame.shape[0], frame.shape[1]), dtype=np.uint8)
                 
     def _segment_background_subtraction(self,  # bg subtract method of segmentation
                                        frame: np.ndarray,

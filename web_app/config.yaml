@@ -27,7 +27,7 @@ tracking:
   
 # Segmentation settings
 segmentation:
-  backend: "mediapipe"  # mediapipe, sam, or mobilenet
+  backend: "background_subtraction"  # mediapipe, sam, or mobilenet
   model_selection: 1  # 0: general, 1: landscape (for mediapipe)
   confidence_threshold: 0.7
   

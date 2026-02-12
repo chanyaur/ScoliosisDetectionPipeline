@@ -91,7 +91,7 @@ detection:
 
 # Segmentation
 segmentation:
-  backend: "mediapipe"  # or "background_subtraction"
+  backend: "background_subtraction"  # or "background_subtraction"
   confidence_threshold: 0.7
 
 # Output
