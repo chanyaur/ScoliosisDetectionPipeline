@@ -8,8 +8,7 @@ Pillow==10.2.0
 ultralytics==8.0.196
 
 # OpenCV
-opencv-python-headless==4.8.1.78
-opencv-python==0.0.0
+opencv-python==4.8.1.78
 
 # Utilities
 tqdm==4.66.1
