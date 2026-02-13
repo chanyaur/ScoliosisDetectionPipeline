@@ -246,8 +246,14 @@ class ModelLoader:
         Returns:
             Dictionary mapping class index to name
         """
-        return {
-            0: 'Positive (Scoliosis)',
-            1: 'Neutral (Borderline)',
-            2: 'Negative (Healthy)'
+        if 'binary' in self.model_type:
+            return {
+                0: 'Positive (Scoliosis)',
+                1: 'Negative (Healthy)'
+            }
+        else:
+            return {
+                0: 'Positive (Scoliosis)',
+                1: 'Neutral (Borderline)',
+                2: 'Negative (Healthy)'
         }
