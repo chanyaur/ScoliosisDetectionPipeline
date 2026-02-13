@@ -110,6 +110,84 @@ class ModelLoader:
             logger.error(f"Failed to load ScoNet-MT model: {e}")
             raise
             
+    def load_sconet_binary(self, checkpoint_path: str) -> nn.Module:  # just loads up the pretrained model from checkpoint
+        """
+        Load ScoNet model from checkpoint
+        
+        Args:
+            checkpoint_path: Path to model checkpoint
+            
+        Returns:
+            Loaded model in eval mode
+        """
+
+        try:
+            # Import ScoNet model
+            from scoliosis_app.models.sconet import ScoNet
+            
+            # Initialize model
+            model = ScoNet(num_classes=2, n_frames=30)
+            
+            # Load checkpoint
+            checkpoint = torch.load(checkpoint_path, map_location=self.device, weights_only=False)  # restore the trained ScoNet parameters w/out retraining
+            # this was changed to false!! TAKE NOTE OF THIS
+            
+            # Handle different checkpoint formats
+            if 'model_state_dict' in checkpoint:  # state dict gets the parameters
+                model.load_state_dict(checkpoint['model_state_dict'])
+            elif 'state_dict' in checkpoint:
+                model.load_state_dict(checkpoint['state_dict'])  # it may be named either one of the two so check both for compatibility
+            else:
+                model.load_state_dict(checkpoint)
+                
+            model.to(self.device)
+            model.eval()
+            
+            logger.info(f"Loaded ScoNet model from {checkpoint_path}")
+            return model
+            
+        except Exception as e:
+            logger.error(f"Failed to load ScoNet model: {e}")
+            raise
+
+    def load_sconet_mt_binary(self, checkpoint_path: str) -> nn.Module:  # loads up pretrained ScoNet-MT
+        """
+        Load ScoNet-MT model from checkpoint
+        
+        Args:
+            checkpoint_path: Path to model checkpoint
+            
+        Returns:
+            Loaded model in eval mode
+        """
+        try:
+            # Import ScoNet-MT model
+            from scoliosis_app.models.sconet import ScoNetMT
+            
+            # Initialize model
+            model = ScoNetMT(num_classes=2, n_frames=30)
+            
+            # Load checkpoint
+            checkpoint = torch.load(checkpoint_path, map_location=self.device)
+            
+            # Handle different checkpoint formats
+            if 'model_state_dict' in checkpoint:
+                model.load_state_dict(checkpoint['model_state_dict'])
+            elif 'state_dict' in checkpoint:
+                model.load_state_dict(checkpoint['state_dict'])
+            else:
+                model.load_state_dict(checkpoint)
+                
+            model.to(self.device)
+            model.eval()
+            
+            logger.info(f"Loaded ScoNet-MT model from {checkpoint_path}")
+            return model
+            
+        except Exception as e:
+            logger.error(f"Failed to load ScoNet-MT model: {e}")
+            raise
+            
     def load_model(self, model_type: str, checkpoint_path: str) -> nn.Module:  # ez just run whichever one of the two functions above to load desired model
         """
         Load model based on type
@@ -125,6 +203,12 @@ class ModelLoader:
             return self.load_sconet(checkpoint_path)
         elif model_type == 'sconet_mt':
             return self.load_sconet_mt(checkpoint_path)
+        if model_type == 'sconet_binary':
+            return self.load_sconet_binary(checkpoint_path)
+        elif model_type == 'sconet_mt_binary':
+            return self.load_sconet_mt_binary(checkpoint_path)
+        
+        
         else:
             raise ValueError(f"Unknown model type: {model_type}")
             
