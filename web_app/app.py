@@ -140,7 +140,7 @@ def run_pipeline_on_video(video_bytes, model_type, _pipeline):
     if(model_type == "ScoNet"):
         predictor = ScoliosisPredictor("scoliosis_app/experiments/improved_ScoNet/checkpoints/clean_weights_sconet.pth")  # modify w model type
     elif(model_type == "ScoNet-MT"):
-        predictor = ScoliosisPredictor("scoliosis_app/experiments/improved_ScoNetMT/checkpoints/clean_weights_sconetMT.pth")  # modify w model type
+        predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/improved_ScoNetMT/checkpoints/clean_weights_sconetMT.pth", model_type='sconet_mt')  # modify w model type
     elif(model_type == "ScoNet (binary)"):
         predictor = ScoliosisPredictor("scoliosis_app/experiments/improved_ScoNet_binary/checkpoints/clean_weights_sconet-binary.pth")  # modify w model type
     elif(model_type == "ScoNet-MT (binary)"):
