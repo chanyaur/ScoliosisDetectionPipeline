@@ -1,6 +1,6 @@
 import torch
 
-checkpoint = torch.load("scoliosis_app/experiments/improved_ScoNet/checkpoints/latest.pth", map_location="cpu", weights_only=False)
+checkpoint = torch.load("scoliosis_app/experiments/improved_ScoNet_binary/checkpoints/latest.pth", map_location="cpu", weights_only=False)
 
 # If it's a dict checkpoint
 if "model_state_dict" in checkpoint:
@@ -8,6 +8,6 @@ if "model_state_dict" in checkpoint:
 else:
     state_dict = checkpoint  # already state_dict
 
-torch.save(state_dict, "clean_weights.pth")
+torch.save(state_dict, "clean_weights_sconet-binary.pth")
 
 print("Saved clean weights.")
