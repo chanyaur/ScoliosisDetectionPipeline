@@ -107,7 +107,7 @@ def main():
         if uploaded_file is not None:
             video_bytes = uploaded_file.read()
                         
-            run_pipeline_on_video(video_bytes, model_type, pipeline)
+            results, prediction, predictor = run_pipeline_on_video(video_bytes, model_type, pipeline)
             btn = st.button(label=st.session_state.video_button_label, on_click=toggle_content_visibility)
             with st.empty():
                 if st.session_state.show_content:
@@ -117,6 +117,18 @@ def main():
                 # placeholder.info("Processing video...")
                 
     st.write(5*"\n")
+    
+        # unsure
+    st.write("\n" + "="*60)
+    st.write("SCREENING RESULTS")
+    st.write("="*60)
+    
+    st.write(predictor.explain_prediction(prediction))
+    
+    st.write("\n" + "-"*60)
+    st.write("CLINICAL RECOMMENDATION")
+    st.write(predictor.get_risk_assessment(prediction))
+    st.write("-"*60)
     st.caption("Created by Chanya Methaprayoon, 2025")
             
         
@@ -148,22 +160,10 @@ def run_pipeline_on_video(video_bytes, model_type, _pipeline):
     
     
     prediction = predictor.predict(results["silhouettes"])
-
-    # unsure
-    st.write("\n" + "="*60)
-    st.write("SCREENING RESULTS")
-    st.write("="*60)
-    
-    st.write(predictor.explain_prediction(prediction))
-    
-    st.write("\n" + "-"*60)
-    st.write("CLINICAL RECOMMENDATION")
-    st.write(predictor.get_risk_assessment(prediction))
-    st.write("-"*60)
     
     st.session_state.predicted_done = True
     
-    return results, prediction
+    return results, prediction, predictor
 
 
 if __name__ == "__main__":
