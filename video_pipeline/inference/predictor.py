@@ -28,7 +28,7 @@ class ScoliosisPredictor:
         
         Args:
             model_path: Path to trained model checkpoint
-            model_type: Type of model ('sconet' or 'sconet_mt')
+            model_type: Type of model ('sconet', 'sconet_mt', 'sconet_binary', or 'sconet_mt_binary')
             device: Device for inference
         """
         self.model_type = model_type
@@ -40,8 +40,11 @@ class ScoliosisPredictor:
         # Load model
         self.model = self.model_loader.load_model(model_type, model_path)
         
-        # Get class names
-        self.class_names = self.model_loader.get_class_names()
+        # Get class names based on model type
+        if 'binary' in model_type:
+            self.class_names = self.model_loader.get_class_names_binary()
+        else:
+            self.class_names = self.model_loader.get_class_names()
         
         logger.info(f"Predictor initialized with {model_type} model")
         
@@ -64,6 +67,12 @@ class ScoliosisPredictor:
                 logits = self.model(input_tensor)
                 angle_pred = None
             elif self.model_type == 'sconet_mt':
+                logits, angle_pred = self.model(input_tensor)
+                angle_pred = angle_pred.cpu().numpy()[0]
+            elif self.model_type == 'sconet_binary':
+                logits = self.model(input_tensor)
+                angle_pred = None
+            elif self.model_type == 'sconet_mt_binary':
                 logits, angle_pred = self.model(input_tensor)
                 angle_pred = angle_pred.cpu().numpy()[0]
             else:
@@ -133,15 +142,15 @@ class ScoliosisPredictor:
                 return "HIGH RISK: Strong indication of scoliosis. Medical evaluation recommended."
             else:
                 return "MODERATE RISK: Possible scoliosis. Further screening recommended."
-                
-        elif pred_class == 1:  # Neutral
-            return "BORDERLINE: Monitor closely. Follow-up screening recommended in 6 months."
             
-        else:  # Negative
+        elif pred_class == 2 or "binary" in self.model_type:  # Negative
             if confidence > 0.8:
                 return "LOW RISK: No significant signs of scoliosis detected."
             else:
                 return "LOW RISK: Unlikely scoliosis, but confidence is moderate."
+            
+        else:  # Neutral
+            return "BORDERLINE: Monitor closely. Follow-up screening recommended in 6 months."
                 
     def explain_prediction(self, prediction: Dict) -> str:  # shows the user all probabilities, and adds angle and medical significance (if ScoNet-MT)
         """

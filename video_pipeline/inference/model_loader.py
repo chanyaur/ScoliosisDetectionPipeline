@@ -193,7 +193,7 @@ class ModelLoader:
         Load model based on type
         
         Args:
-            model_type: Type of model ('sconet' or 'sconet_mt')
+            model_type: Type of model ('sconet', 'sconet_mt', 'sconet_binary', or 'sconet_mt_binary')
             checkpoint_path: Path to model checkpoint
             
         Returns:
@@ -203,12 +203,10 @@ class ModelLoader:
             return self.load_sconet(checkpoint_path)
         elif model_type == 'sconet_mt':
             return self.load_sconet_mt(checkpoint_path)
-        if model_type == 'sconet_binary':
+        elif model_type == 'sconet_binary':
             return self.load_sconet_binary(checkpoint_path)
         elif model_type == 'sconet_mt_binary':
             return self.load_sconet_mt_binary(checkpoint_path)
-        
-        
         else:
             raise ValueError(f"Unknown model type: {model_type}")
             
@@ -250,4 +248,16 @@ class ModelLoader:
             0: 'Positive (Scoliosis)',
             1: 'Neutral (Borderline)',
             2: 'Negative (Healthy)'
+        }
+    
+    def get_class_names_binary(self) -> Dict[int, str]:  # simple int index - str name mapping for binary classification
+        """
+        Get mapping of class indices to names for binary classification
+        
+        Returns:
+            Dictionary mapping class index to name
+        """
+        return {
+            0: 'Positive (Scoliosis)',
+            1: 'Negative (Healthy)'
         }

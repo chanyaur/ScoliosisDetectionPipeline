@@ -39,7 +39,7 @@ def main():
     _, col1, _, col2, _ = st.columns([2, 5, 1, 6, 2.5])
 
     with col1:
-        st.write('''Welcome! This website is designed to be the first video-based pipeline for early scoliosis detection 
+        st.write('''Welcome! This website is designed to be a video-based pipeline for early scoliosis detection 
                  that takes a video all the way from user input to model prediction.''')
         
         # st.markdown(
