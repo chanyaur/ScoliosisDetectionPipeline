@@ -2,6 +2,13 @@
 Main video processing pipeline for converting phone videos to silhouettes
 """
 
+import cv2
+import streamlit as st
+
+st.write("cv2 imported")
+st.write(cv2.__version__)
+st.stop()
+
 import numpy as np
 import yaml
 from pathlib import Path
