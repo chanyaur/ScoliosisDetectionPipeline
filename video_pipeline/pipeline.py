@@ -10,11 +10,11 @@ import logging
 from tqdm import tqdm
 import warnings
 
-from core.video_loader import VideoLoader  # added dots to these: why?
-from core.person_detector import PersonDetector  
-from core.person_tracker import PersonTracker
-from core.segmentation import HumanSegmenter
-from core.silhouette_generator import SilhouetteGenerator
+from .core.video_loader import VideoLoader  # added dots to these: why?
+from .core.person_detector import PersonDetector  
+from .core.person_tracker import PersonTracker
+from .core.segmentation import HumanSegmenter
+from .core.silhouette_generator import SilhouetteGenerator
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
