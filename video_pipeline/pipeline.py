@@ -2,12 +2,6 @@
 Main video processing pipeline for converting phone videos to silhouettes
 """
 
-import cv2
-import streamlit as st
-
-st.write("cv2 imported")
-st.write(cv2.__version__)
-st.stop()
 
 import numpy as np
 import yaml
@@ -17,11 +11,11 @@ import logging
 from tqdm import tqdm
 import warnings
 
-from .core.video_loader import VideoLoader  # added dots to these: why?
-from .core.person_detector import PersonDetector  
-from .core.person_tracker import PersonTracker
-from .core.segmentation import HumanSegmenter
-from .core.silhouette_generator import SilhouetteGenerator
+from core.video_loader import VideoLoader  # added dots to these: why?
+from core.person_detector import PersonDetector  
+from core.person_tracker import PersonTracker
+from core.segmentation import HumanSegmenter
+from core.silhouette_generator import SilhouetteGenerator
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
