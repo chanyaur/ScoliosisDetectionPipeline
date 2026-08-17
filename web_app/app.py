@@ -15,7 +15,7 @@ from video_pipeline.pipeline import VideoToSilhouettePipeline
 from video_pipeline.inference.predictor import ScoliosisPredictor
 
 # Constants
-SAVED_MODEL_PATH = "scoliosis_app\experiments\improved_ScoNet_binary\checkpoints\latest.pth"
+SAVED_MODEL_PATH = "scoliosis_app/experiments/improved_ScoNet_binary/checkpoints/latest.pth"  #!
 TITLE = 'Full Video Pipeline for Scoliosis Detection'
 TITLE_PADDED = '&emsp;'*4 + TITLE
 IM_CONSTANTS = {'LOGO': 'https://i.ibb.co/xhcsJ0d/duck-guy.png'}
@@ -33,7 +33,7 @@ def main():
     if "predicted_done" not in st.session_state:
         st.session_state.predicted_done = True
     
-    pipeline = VideoToSilhouettePipeline("video_pipeline\config.yaml")  # be careful if config acc loads or not
+    pipeline = VideoToSilhouettePipeline("video_pipeline/config.yaml")  # be careful if config acc loads or not
     
     # UI setup and information display
     _, col1, _, col2, _ = st.columns([2, 5, 1, 6, 2.5])
