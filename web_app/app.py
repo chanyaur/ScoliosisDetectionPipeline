@@ -60,8 +60,20 @@ def main():
         st.caption("Accepted formats: **MP4, MOV**; Requirements: **≥ 5s, ≥ 15fps**")
         
         st.header("FAQ")
+        
         with st.expander("What should my gait video look like?"):
-            st.caption("Requirements: ≥ 5s, ≥ 15fps")
+            st.markdown("""
+            For the best results, your video should:
+            
+            - Be **at least 5 seconds long** and recorded at **15 FPS or higher**
+            - Show your **entire body from head to toe**
+            - Capture you **walking naturally at a normal pace**
+            - Be filmed from the **side (profile view)**
+            - Keep your **whole body visible throughout the video**
+            - Use a **stationary camera** with minimal shaking
+            - Have **good lighting** and a clear, uncluttered background
+            - Avoid loose clothing that significantly obscures your body shape
+            """)
             
         with st.expander("What are the stages of the pipeline?"):
             st.markdown('''
@@ -72,13 +84,45 @@ def main():
             4. **Silhouette Generation** - Convert to 64x64 binary silhouettes
             5. **Model Inference** - Predict scoliosis classification using trained models
             ''')
-            st.write("For more information, visit our project page at [HYPERLINK]")
         
         with st.expander("What are the differences between the four models?"):
-            st.write('''hello''')
-         
+            st.write('''
+            The four models differ in both their **prediction task** and **architecture**.
+
+            **ScoNet (3-class)** classifies gait into three scoliosis categories: Positive
+            (>10° Cobb angle), Neutral (~10°), or Negative (<10°).
+
+            **ScoNet-MT (3-class)** uses the same classification framework, but adds an
+            auxiliary regression task that predicts Cobb angle. This multi-task approach
+            is designed to help the model learn features related to scoliosis severity in
+            addition to the classification itself.
+
+            **Binary ScoNet** removes the borderline Neutral class and distinguishes only
+            between Positive and Negative cases. Removing ambiguous cases near the 10°
+            diagnostic threshold creates a simpler classification problem.
+
+            **Binary ScoNet-MT** combines the binary classification task with the
+            multi-task architecture, using both classification and Cobb-angle prediction.
+            ''')
+
         with st.expander("How well do the models perform?"):
-            st.write('''hello''')
+            st.write('''
+            Model performance was evaluated on previously unseen test data using metrics
+            including accuracy, sensitivity, F1 score, and area under the ROC curve (AUC).
+
+            The binary models performed particularly well. **Binary ScoNet achieved an
+            AUC of 0.950, 90.8% accuracy, and a 92.2% F1 score**, while **Binary ScoNet-MT
+            achieved an AUC of 0.954, 89.7% accuracy, and a 91.7% F1 score**.
+
+            The three-class models were evaluated on the more difficult task of separating
+            Positive, Neutral, and Negative cases. **ScoNet achieved 80.4% accuracy and
+            88.0% sensitivity**, while **ScoNet-MT achieved 80.0% accuracy and 93.3%
+            sensitivity**.
+
+            These results suggest that the models can identify patterns associated with
+            scoliosis from gait silhouettes, while the stronger binary performance also
+            shows the difficulty of distinguishing borderline Neutral cases.
+            ''')
             
         with st.expander("How do I interpret my results?"):
             st.markdown(
@@ -96,7 +140,7 @@ def main():
                 '''
             )
         
-        btn = st.button("reload col1")
+        # btn = st.button("reload col1")
 
     with col2:
         model_type = st.selectbox(label="Select preferred model", options=["ScoNet", "ScoNet-MT", "ScoNet (binary)", "ScoNet-MT (binary)"])
@@ -142,27 +186,36 @@ def run_pipeline_on_video(video_bytes, model_type, _pipeline):
     elif(model_type == "ScoNet-MT"):
         predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/improved_ScoNetMT/checkpoints/clean_weights_sconetMT.pth", model_type='sconet_mt')  # modify w model type
     elif(model_type == "ScoNet (binary)"):
-        predictor = ScoliosisPredictor(model_path = "scoliosis_app/experiments/improved_ScoNet_binary/checkpoints/clean_weights_sconet-binary.pth", model_type="sconet_binary")  # modify w model type
+        predictor = ScoliosisPredictor(model_path = "scoliosis_app/experiments/improved_ScoNet2/checkpoints/clean_weights_sconet-binary.pth", model_type="sconet_binary")  # name is wrong but actually sconetbinary2
     elif(model_type == "ScoNet-MT (binary)"):
-        predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/improved_ScoNetMT-binary/checkpoints/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
+        predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/improved_ScoNetMT_binary2/checkpoints/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
     
     
     prediction = predictor.predict(results["silhouettes"])
     
     
         # unsure
-    st.write("\n" + "="*60)
-    st.write("SCREENING RESULTS")
-    st.write("="*60)
-    
-    st.write(predictor.explain_prediction(prediction))
-    
-    st.write("\n" + "-"*60)
-    st.write("CLINICAL RECOMMENDATION")
-    st.write(predictor.get_risk_assessment(prediction))
-    st.write("-"*60)
-    st.caption("Created by Chanya Methaprayoon, 2025")
-    
+        
+    st.caption(f"Analysis performed using: **{model_type}**")
+
+    st.subheader("Screening Results")
+
+    with st.container(border=True):
+        st.write(predictor.explain_prediction(prediction))
+
+    st.subheader("Clinical Recommendation")
+
+    with st.container(border=True):
+        st.write(predictor.get_risk_assessment(prediction))
+
+    st.caption(
+        "⚠️ This tool is intended for preliminary screening only and does not "
+        "provide a medical diagnosis. Please consult a qualified healthcare "
+        "professional for clinical evaluation."
+    )
+
+    st.divider()
+    st.caption("Created by Chanya Methaprayoon · 2025")
     
     st.session_state.predicted_done = True
 

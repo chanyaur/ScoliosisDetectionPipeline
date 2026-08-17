@@ -273,6 +273,11 @@ class Trainer:
             torch.save(checkpoint, best_path)
             print(f"Saved best model with sensitivity: {val_sensitivity:.4f}")
             
+            
+        normal_path = self.checkpoint_dir / f'epoch_{epoch}.pth'
+        torch.save(checkpoint, normal_path)
+        print(f"Saved epoch {epoch} with sensitivity: {val_sensitivity:.4f}")
+            
         # if val_auc > self.best_val_auc:
         #     self.best_val_auc = val_auc
         #     self.best_epoch_auc = epoch
@@ -445,7 +450,7 @@ def get_config():
 def main():
     """Main function"""
     parser = argparse.ArgumentParser(description='Train ScoNet on Scoliosis1K')
-    parser.add_argument('--model_type', type=str, default='base',
+    parser.add_argument('--model_type', type=str, default='mt',  # CHANGE THIS to train on base or mt
                        choices=['base', 'mt'], help='Model type')
     parser.add_argument('--epochs', type=int, default=50, help='Number of epochs')  # EPOCH NUM
     parser.add_argument('--batch_size', type=int, default=16, help='Batch size')
