@@ -32,6 +32,8 @@ def main():
         st.session_state.video_button_label = "Show video"
     if "predicted_done" not in st.session_state:
         st.session_state.predicted_done = True
+    if "sample_video" not in st.session_state:
+        st.session_state.sample_video = None
     
     pipeline = VideoToSilhouettePipeline("video_pipeline/config.yaml")  # be careful if config acc loads or not
     
@@ -74,6 +76,13 @@ def main():
             - Have **good lighting** and a clear, uncluttered background
             - Avoid loose clothing that significantly obscures your body shape
             """)
+
+            st.markdown("**Example gait video:**")
+            sample_video_path = "scoliosis_app/sample_videos/demo.MOV"
+            if os.path.exists(sample_video_path):
+                st.video(sample_video_path)
+            else:
+                st.caption("Sample video unavailable.")
             
         with st.expander("What are the stages of the pipeline?"):
             st.markdown('''
@@ -145,6 +154,11 @@ def main():
     with col2:
         model_type = st.selectbox(label="Select preferred model", options=["ScoNet", "ScoNet-MT"]) # ["ScoNet", "ScoNet-MT", "ScoNet (binary)", "ScoNet-MT (binary)"])
         uploaded_file = st.file_uploader("Upload a gait video (.mp4, .mov)", type=["mp4", "mov"])
+
+        st.markdown("**Don't have a gait video? Try a sample.**")
+        if st.button("Try with a sample video"):
+            with open("scoliosis_app/sample_videos/demo.MOV", "rb") as f:
+                st.session_state.sample_video = f.read()
         # placeholder = st.empty()
         # placeholder.info("Results will appear here!")
         
@@ -159,6 +173,15 @@ def main():
                     st.video(video_bytes, autoplay=True, muted=True, width=180)
                 
                 # placeholder.info("Processing video...")
+
+        elif st.session_state.sample_video is not None:
+            video_bytes = st.session_state.sample_video
+
+            run_pipeline_on_video(video_bytes, model_type, pipeline)
+            btn = st.button(label=st.session_state.video_button_label, on_click=toggle_content_visibility)
+            with st.empty():
+                if st.session_state.show_content:
+                    st.video(video_bytes, autoplay=True, muted=True, width=180)
                 
     st.write(5*"\n")
     
