@@ -16,7 +16,7 @@ from .core.person_detector import PersonDetector
 from .core.person_tracker import PersonTracker
 from .core.segmentation import HumanSegmenter
 from .core.silhouette_generator import SilhouetteGenerator
-
+# for regular, no dot, for website, dot
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

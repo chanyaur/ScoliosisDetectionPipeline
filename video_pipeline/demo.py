@@ -18,7 +18,7 @@ from inference.predictor import ScoliosisPredictor, EnsemblePredictor
 def main():
     parser = argparse.ArgumentParser(description='Scoliosis Detection from Phone Video')
     parser.add_argument('video', help='Path to input video file')
-    parser.add_argument('--model', default='../scoliosis_app/experiments/sconet_20251004_205715/checkpoints/best.pth',
+    parser.add_argument('--model', default='scoliosis_app/experiments/improved_ScoNet/checkpoints/clean_weights_sconet.pth',
                        help='Path to trained model checkpoint')
     parser.add_argument('--model-type', default='sconet', choices=['sconet', 'sconet_mt'],
                        help='Model type to use')
