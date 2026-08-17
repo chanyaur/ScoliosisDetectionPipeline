@@ -143,7 +143,7 @@ def main():
         # btn = st.button("reload col1")
 
     with col2:
-        model_type = st.selectbox(label="Select preferred model", options=["ScoNet", "ScoNet-MT", "ScoNet (binary)", "ScoNet-MT (binary)"])
+        model_type = st.selectbox(label="Select preferred model", options=["ScoNet", "ScoNet-MT"]) # ["ScoNet", "ScoNet-MT", "ScoNet (binary)", "ScoNet-MT (binary)"])
         uploaded_file = st.file_uploader("Upload a gait video (.mp4, .mov)", type=["mp4", "mov"])
         # placeholder = st.empty()
         # placeholder.info("Results will appear here!")
@@ -185,12 +185,12 @@ def run_pipeline_on_video(video_bytes, model_type, _pipeline):
         predictor = ScoliosisPredictor("scoliosis_app/experiments/improved_ScoNet/checkpoints/clean_weights_sconet.pth")  # modify w model type
     elif(model_type == "ScoNet-MT"):
         predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/improved_ScoNetMT/checkpoints/clean_weights_sconetMT.pth", model_type='sconet_mt')  # modify w model type
-    elif(model_type == "ScoNet (binary)"):
-        # predictor = ScoliosisPredictor(model_path = "scoliosis_app/experiments/improved_ScoNet2/checkpoints/clean_weights_sconet-binary.pth", model_type="sconet_binary")  # name is wrong but actually sconetbinary2
-        predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/final_models/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
-    elif(model_type == "ScoNet-MT (binary)"):
-        # predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/improved_ScoNetMT_binary2/checkpoints/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
-        predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/final_models/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
+    # elif(model_type == "ScoNet (binary)"):
+    #     # predictor = ScoliosisPredictor(model_path = "scoliosis_app/experiments/improved_ScoNet2/checkpoints/clean_weights_sconet-binary.pth", model_type="sconet_binary")  # name is wrong but actually sconetbinary2
+    #     predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/final_models/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
+    # elif(model_type == "ScoNet-MT (binary)"):
+    #     # predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/improved_ScoNetMT_binary2/checkpoints/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
+    #     predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/final_models/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
         
     
     prediction = predictor.predict(results["silhouettes"])
