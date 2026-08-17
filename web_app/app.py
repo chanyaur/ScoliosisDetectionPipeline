@@ -186,10 +186,12 @@ def run_pipeline_on_video(video_bytes, model_type, _pipeline):
     elif(model_type == "ScoNet-MT"):
         predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/improved_ScoNetMT/checkpoints/clean_weights_sconetMT.pth", model_type='sconet_mt')  # modify w model type
     elif(model_type == "ScoNet (binary)"):
-        predictor = ScoliosisPredictor(model_path = "scoliosis_app/experiments/improved_ScoNet2/checkpoints/clean_weights_sconet-binary.pth", model_type="sconet_binary")  # name is wrong but actually sconetbinary2
+        # predictor = ScoliosisPredictor(model_path = "scoliosis_app/experiments/improved_ScoNet2/checkpoints/clean_weights_sconet-binary.pth", model_type="sconet_binary")  # name is wrong but actually sconetbinary2
+        predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/final_models/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
     elif(model_type == "ScoNet-MT (binary)"):
-        predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/improved_ScoNetMT_binary2/checkpoints/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
-    
+        # predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/improved_ScoNetMT_binary2/checkpoints/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
+        predictor = ScoliosisPredictor(model_path="scoliosis_app/experiments/final_models/clean_weights_sconetMT-binary.pth", model_type = "sconet_mt_binary")  # modify w model type
+        
     
     prediction = predictor.predict(results["silhouettes"])
     
@@ -215,7 +217,7 @@ def run_pipeline_on_video(video_bytes, model_type, _pipeline):
     )
 
     st.divider()
-    st.caption("Created by Chanya Methaprayoon · 2025")
+    st.caption("Created by Chanya Methaprayoon · Updated 2026")
     
     st.session_state.predicted_done = True
 
